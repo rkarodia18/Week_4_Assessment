@@ -3,8 +3,13 @@ title: "week_3_assignment"
 author: "RK"
 date: "2025-09-21"
 output:
-  pdf_document: default
-  PDF: default
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 2
+    theme: united
+    highlight: zenburn
+    df_print: paged
 ---
 
 ```{r setup, include=FALSE}
@@ -14,7 +19,7 @@ knitr::opts_chunk$set(echo = TRUE,
 
 # load necessary packages 
 library(pacman)
-pacman::p_load(rio, here, tidyverse, skimr, formatR, gridExtra, janitor, cowplot, ggpubr)
+pacman::p_load(rio, here, tidyverse, skimr, formatR, gridExtra, janitor, cowplot, ggpubr, DT)
 
 ```
 
@@ -24,15 +29,14 @@ Data files expected in the working directory:
 
 ```{r}
 # import data sets as provided
-nhanes_data <- import(here("assessment", "cleaned_NHANES.csv"))
-diet_data <- import(here("assessment", "diet.csv"))
+nhanes_data <- import(here("cleaned_NHANES.csv"))
+diet_data <- import(here("diet.csv"))
 ```
 
-# Exercise 1 (20%)
+# Exercise 1 {.tabset}
 
-```{r ex1}
-## exercise 1
-
+## Figures 1 and 2, individual 
+```{r}
 # plot figure 1 (age histogram), group by gender
 figure1  <- ggplot(nhanes_data, aes(x = age, fill = gender)) +
   geom_histogram(binwidth = 5, position = "dodge") +
@@ -47,7 +51,10 @@ figure2 <- ggplot(nhanes_data, aes(x = ethnicity_1, fill = gender)) +
 
 figure1
 figure2
+```
 
+## Figures 1 and 2, combined
+```{r ex1}
 # combine with cowplot
 figure_combined_cow <- cowplot::plot_grid(
   figure1, figure2
@@ -65,7 +72,16 @@ figure_combined_gg
 ```
 **Exercise 1 comparison:** The layout of ggarrange looks better than cowplot, because both graphs share a common legend. By combining the legend in the ggarrange output, it makes the output look cleaner and its easier to compare. 
 
-# Exercise 2 (20%)
+# Exercise 2
+
+## Full NHANES dataset
+
+```{r}
+datatable(
+  nhanes_data,
+  options = list(scrollX = TRUE)
+)
+```
 
 ```{r ex2}
 ## age 
