@@ -1,0 +1,56 @@
+---
+title: "NHANES Dashboard"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: rows
+---
+
+```{r setup, include=FALSE}
+# load necessary packages 
+library(pacman)
+pacman::p_load(rio, here, tidyverse, dplyr, scales, skimr, formatR, gridExtra, janitor, DT, flexdashboard, fontawesome)
+
+# import cleaned NHANES dataset
+nhanes_data <- import(here("assessment", "cleaned_NHANES.csv"))
+
+
+```
+
+Top row: {data-height=650}
+-----------------------------------------------------------
+### Figure 2 from week 3 assessment
+```{r}
+knitr::include_graphics(here("assessment", "figure2.png"))
+
+```
+
+
+Bottom row: {data-height=350}
+-----------------------------------------------------------
+
+### Gauge
+```{r}
+# insert gauge
+gauge(
+  value = 57,
+  min = 0,
+  max = 100,
+  symbol = "%"
+)
+```
+
+### Value
+```{r}
+
+# insert valuebox
+library(flexdashboard)
+valueBox(
+ 31,
+ caption = "Percentage of individuals with an average blood pressure above 120 mm Hg",
+ icon = "fa-heart", 
+ color = "warning"
+ )
+```
+
+
+
